@@ -2,7 +2,7 @@ class ENVied
   class Configuration
     attr_reader :current_group, :coercer
 
-    def initialize(**options, &block)
+    def initialize(options = {}, &block)
       @coercer = options.fetch(:coercer, Coercer.new)
       @key_alias = options[:key_alias]
       instance_eval(&block) if block_given?
@@ -20,7 +20,7 @@ class ENVied
       raise "Defaults are no longer supported. See https://gitlab.com/envied/envied/tree/master#what-happened-to-default-values for the recommended upgrade-path, or pin the gem to 0.9-release (e.g. `gem 'envied', '~> 0.9.2'`) to keep using defaults."
     end
 
-    def self.load(**options)
+    def self.load(options = {})
       envfile = File.expand_path('Envfile')
       new(options).tap do |v|
         v.instance_eval(File.read(envfile), envfile)
